@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/sofa/gulp-sofa-define-annotation/issues"
   },
-  "homepage": "https://github.com/sofa/gulp-sofa-define-annotation"
+  "homepage": "https://github.com/sofa/gulp-sofa-define-annotation",
+  "dependencies": {
+    "lodash.template": "^3.6.1",
+    "through2": "^0.6.5"
+  }
 }
