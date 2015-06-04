@@ -2,7 +2,7 @@
   "name": "gulp-sofa-define-annotation",
   "version": "0.1.0",
   "description": "A Simple Gulp Task That Replaces A Simple Annotation With A Legacy sofa.define Wrapper",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "mocha test/sofa-define-wrapper.spec.js --ui tdd"
   },
@@ -23,6 +23,9 @@
   },
   "devDependencies": {
     "event-stream": "^3.3.1",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.1.0",
+    "gulp-mocha": "^2.1.0",
     "mocha": "^2.2.5",
     "should": "^6.0.3",
     "vinyl": "^0.5.0"

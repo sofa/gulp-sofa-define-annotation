@@ -1,9 +1,8 @@
 'use strict';
-
-var through = require('through2'),
-    tmpl    = require('lodash.template'),
-    fs      = require('fs'),
-    path    = require('path');
+import through from 'through2';
+import tmpl from 'lodash.template';
+import fs from 'fs';
+import path from 'path';
 
 function findClass(code) {
     var classPattern = /\s?class ([\S]+)/,
@@ -27,15 +26,15 @@ function findConstructor(code) {
     }
 }
 
-var annotationPattern = /\/\/\s?@SofaWrapper[\s\S]+$/;
+const annotationPattern = /\/\/\s?@SofaWrapper[\s\S]+$/;
 function findAnnotation(code) {
     var extractAnnotation = /\/\/\s?@SofaWrapper:? ([\S]+)\(([\s\S,]+?)\)/,
         matches = extractAnnotation.exec(code),
         params  = {name: '', args: []};
     
     if (matches) {
-        params.name = matches[1];
-        params.args = matches[2];
+        let [,name,args] = matches;
+        params = {name, args};
     } else {
         params.name = findClass(code);
         params.args = findConstructor(code);
@@ -44,7 +43,7 @@ function findAnnotation(code) {
     return params;
 }
 
-var wrapperTmpl = tmpl(fs.readFileSync(path.join(__dirname, 'sofaWrapper.tpl')));
+import wrapperTmpl from './sofaWrapper.tpl.js';
 function annotate(code) {
     if (annotationPattern.test(code)) {
         var annotation = findAnnotation(code),
@@ -55,27 +54,24 @@ function annotate(code) {
     }
 }
 
+import stripBom from 'strip-bom';
 function annotateStream() {
-    var stripBom = require('strip-bom'),
-        code     = new Buffer(''),
+    var code = new Buffer(''),
         transform;
 
-    transform = through(function(chunk, enc, cb) {
+    transform = through((chunk, enc, cb) => {
         code = Buffer.concat([code, chunk]);
         cb(null);
     }, function(cb) {
-        var annotated = annotate(code.toString());
-        this.push(annotated);
+        this.push(annotate(code.toString()));
         cb();
     });
 
     return stripBom.stream().pipe(transform);
 }
 
-module.exports = function(config) {
-    var config = config || {};
-
-    return through.obj(function(file, enc, cb) {
+export default function() {
+    return through.obj((file, enc, cb) => {
         if (file.isNull()) {
             cb(null, file);
         }

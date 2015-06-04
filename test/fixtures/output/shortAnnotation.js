@@ -17,4 +17,3 @@ if (sofa) {
         return new Test(param1, param2);
     });
 }
-
