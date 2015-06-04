@@ -1,0 +1,19 @@
+{
+  "name": "gulp-sofa-define-annotation",
+  "version": "0.1.0",
+  "description": "A Simple Gulp Task That Replaces A Simple Annotation With A Legacy sofa.define Wrapper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sofa/gulp-sofa-define-annotation"
+  },
+  "author": "Robin Thrift <thrift.d.robin@googlemail.com>",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/sofa/gulp-sofa-define-annotation/issues"
+  },
+  "homepage": "https://github.com/sofa/gulp-sofa-define-annotation"
+}
