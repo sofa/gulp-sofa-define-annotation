@@ -55,20 +55,21 @@ function annotate(code) {
     }
 }
 
-function annotateStream(fileStream) {
-    var outputStream = through(),
-        code         = new Buffer('');
+function annotateStream() {
+    var stripBom = require('strip-bom'),
+        code     = new Buffer(''),
+        transform;
 
-    fileStream.on('data', function(data) {
-        code = Buffer.concat([code, data]);
-    });
-
-    fileStream.on('end', function() {
+    transform = through(function(chunk, enc, cb) {
+        code = Buffer.concat([code, chunk]);
+        cb(null);
+    }, function(cb) {
         var annotated = annotate(code.toString());
-        outputStream.write(new Buffer(annotated));
+        this.push(annotated);
+        cb();
     });
 
-    return outputStream;
+    return stripBom.stream().pipe(transform);
 }
 
 module.exports = function(config) {
@@ -84,7 +85,7 @@ module.exports = function(config) {
         }
 
         if (file.isStream()) {
-            file.contents = annotateStream(file.contents); 
+            file.contents = file.contents.pipe(annotateStream());
         }
 
         cb(null, file);
