@@ -1,6 +1,6 @@
 {
   "name": "gulp-sofa-define-annotation",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A Simple Gulp Task That Replaces A Simple Annotation With A Legacy sofa.define Wrapper",
   "main": "dist/index.js",
   "scripts": {
