@@ -70,7 +70,7 @@ function annotateStream() {
     return stripBom.stream().pipe(transform);
 }
 
-export default function() {
+function gulpPlugin() {
     return through.obj((file, enc, cb) => {
         if (file.isNull()) {
             cb(null, file);
@@ -87,3 +87,25 @@ export default function() {
         cb(null, file);
     });
 };
+
+function karmaPlugin(logger) {
+    var log = logger.create('preprocessor.sofa-define-annotation');
+
+    return function(content, file, done) {
+        log.debug('Transforming file %s', file.originalPath);
+        
+        if (Buffer.isBuffer(content)) {
+            content = new Buffer(annotate(content.toString()));        
+        } else {
+            content = annotate(content);        
+        }
+
+        done(null, content);
+    }
+}
+
+karmaPlugin.$inject = ['logger'];
+
+gulpPlugin.karmaPlugin = ['factory', karmaPlugin];
+
+export default gulpPlugin;
