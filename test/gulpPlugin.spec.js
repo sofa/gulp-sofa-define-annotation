@@ -86,6 +86,41 @@ suite('sofa.define Wrapper Gulp Task:', function() {
         });
     });
 
+    suite('transform shortly annotated class without constructor parameters', function() {
+        test('from buffer', function(done) {
+            var srcFile = new File({
+                    contents: new Buffer(rfs('src/shortAnnotationWithNoParams.js'))
+                }),
+                pluginStream = plugin();        
+
+            pluginStream.write(srcFile);
+
+            pluginStream.once('data', function(file) {
+                    file.isBuffer().should.equal(true);
+                    file.contents.toString().should.equal(rfs('output/shortAnnotationWithNoParams.js'));
+                    done();
+                });
+        });
+
+        test('from stream', function(done) {
+            var srcFile = new File({
+                    contents: fs.createReadStream(path.join(__dirname, 'fixtures/src/shortAnnotationWithNoParams.js')).pipe(stripBom.stream())
+                }),
+                pluginStream = plugin();        
+
+            pluginStream.write(srcFile);
+
+            pluginStream.once('data', function(file) {
+                    file.isStream().should.equal(true);
+                    file.contents.pipe(es.wait(function(err, data) {
+                        data.toString().should.equal(rfs('output/shortAnnotationWithNoParams.js'));
+                        done(err);
+                    }));
+                });
+        });
+    });
+
+
     suite('transform extended class', function() {
         test('from buffer', function(done) {
             var srcFile = new File({
