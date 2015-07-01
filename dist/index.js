@@ -43,7 +43,7 @@ function findClass(code) {
 }
 
 function findConstructor(code) {
-    var constructorPattern = /constructor\(([\s\S]+?)\)/,
+    var constructorPattern = /constructor\(([\s\S]*?)\)/,
         match = constructorPattern.exec(code);
 
     if (match) {
